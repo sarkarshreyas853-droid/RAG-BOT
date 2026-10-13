@@ -1,0 +1,14 @@
+[
+  {
+    "question": "EXAMPLE: What is the minimum attendance required to sit the exam?",
+    "file": "handbook.pdf",
+    "page": 12,
+    "expected_answer": "75 percent attendance is required."
+  },
+  {
+    "question": "EXAMPLE: Who can apply for the scholarship?",
+    "file": "scholarship_rules.pdf",
+    "page": 3,
+    "expected_answer": "Students with family income below the stated limit."
+  }
+]
