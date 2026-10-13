@@ -1,1 +1,6 @@
-
+venv/
+__pycache__/
+.env
+chroma_*/
+results_*.json
+.DS_Store
