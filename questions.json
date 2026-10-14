@@ -1,14 +1,122 @@
 [
   {
-    "question": "EXAMPLE: What is the minimum attendance required to sit the exam?",
-    "file": "handbook.pdf",
-    "page": 12,
-    "expected_answer": "75 percent attendance is required."
+    "question": "When was Sample Institute of Technology founded?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 1,
+    "expected_answer": "In 1998."
   },
   {
-    "question": "EXAMPLE: Who can apply for the scholarship?",
-    "file": "scholarship_rules.pdf",
+    "question": "Which branches does the institute offer for B.Tech?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 1,
+    "expected_answer": "Computer Science and Engineering, Electronics and Communication Engineering, Mechanical Engineering and Civil Engineering."
+  },
+  {
+    "question": "What is the minimum attendance needed to sit the end-semester exam?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 2,
+    "expected_answer": "75 percent in each subject."
+  },
+  {
+    "question": "What happens to students with attendance below 65 percent?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 2,
+    "expected_answer": "They are detained and must repeat the subject in the next academic year."
+  },
+  {
+    "question": "What is the condonation fee for attendance shortage?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 2,
+    "expected_answer": "500 rupees per subject."
+  },
+  {
+    "question": "How are marks divided between internal and end-semester assessment?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
     "page": 3,
-    "expected_answer": "Students with family income below the stated limit."
+    "expected_answer": "40 marks internal and 60 marks end-semester, out of 100."
+  },
+  {
+    "question": "What grade is given for marks between 80 and 89?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 3,
+    "expected_answer": "A+."
+  },
+  {
+    "question": "What is the fee and deadline for re-evaluation of a paper?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 3,
+    "expected_answer": "300 rupees per paper, applied within 7 days of the result."
+  },
+  {
+    "question": "What is the penalty for a second plagiarism offence?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 4,
+    "expected_answer": "Failing the entire course."
+  },
+  {
+    "question": "How many books can a student borrow, and for how long?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 5,
+    "expected_answer": "Up to 4 books for 14 days."
+  },
+  {
+    "question": "What is the late fee for overdue library books?",
+    "file": "Sample_Institute_Student_Handbook.pdf",
+    "page": 5,
+    "expected_answer": "5 rupees per day per book."
+  },
+  {
+    "question": "What score is needed to be eligible for the Merit Scholarship?",
+    "file": "Sample_Institute_Scholarship_Guide.pdf",
+    "page": 2,
+    "expected_answer": "Above 85 percent in the previous semester."
+  },
+  {
+    "question": "How much of the tuition fee does the Merit Scholarship cover?",
+    "file": "Sample_Institute_Scholarship_Guide.pdf",
+    "page": 2,
+    "expected_answer": "50 percent of the tuition fee."
+  },
+  {
+    "question": "What family income qualifies a student for the Need-Based Scholarship?",
+    "file": "Sample_Institute_Scholarship_Guide.pdf",
+    "page": 3,
+    "expected_answer": "Below 5 lakh rupees per year."
+  },
+  {
+    "question": "What documents are required for the Need-Based Scholarship?",
+    "file": "Sample_Institute_Scholarship_Guide.pdf",
+    "page": 3,
+    "expected_answer": "An income certificate, an Aadhaar card and the previous semester marksheet."
+  },
+  {
+    "question": "What is the last date to apply for scholarships?",
+    "file": "Sample_Institute_Scholarship_Guide.pdf",
+    "page": 4,
+    "expected_answer": "30 September each year."
+  },
+  {
+    "question": "What is the fee for a double room in the hostel?",
+    "file": "Sample_Institute_Hostel_and_Campus_Guide.pdf",
+    "page": 1,
+    "expected_answer": "60,000 rupees per year."
+  },
+  {
+    "question": "When does the hostel gate close for first-year students?",
+    "file": "Sample_Institute_Hostel_and_Campus_Guide.pdf",
+    "page": 2,
+    "expected_answer": "9:30 PM."
+  },
+  {
+    "question": "On which day are hostel visitors allowed?",
+    "file": "Sample_Institute_Hostel_and_Campus_Guide.pdf",
+    "page": 2,
+    "expected_answer": "Sundays, from 10:00 AM to 5:00 PM."
+  },
+  {
+    "question": "How much does a yearly college bus pass cost?",
+    "file": "Sample_Institute_Hostel_and_Campus_Guide.pdf",
+    "page": 4,
+    "expected_answer": "8,000 rupees."
   }
 ]
