@@ -1,5 +1,5 @@
-chromadb
-pypdf
-sentence-transformers
-anthropic
-streamlit
+   chromadb
+   pypdf
+   sentence-transformers
+   groq
+   streamlit
