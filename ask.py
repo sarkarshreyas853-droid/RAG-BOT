@@ -42,6 +42,18 @@ class RAG:
         import anthropic
         return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
 
+    def _pick_groq_model(self):
+        global LLM_MODEL
+        ids = [m.id for m in self.llm.models.list().data]
+        bad = ("whisper", "guard", "tts", "playai", "orpheus", "safeguard", "embed")
+        ok = [i for i in ids if not any(b in i.lower() for b in bad)]
+        prefs = ["llama-3.3-70b-versatile", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "llama-3.1-8b-instant"]
+        pick = next((p for p in prefs if p in ok and p != LLM_MODEL), None) or next((i for i in ok if i != LLM_MODEL), None)
+        if not pick:
+            raise RuntimeError(f"No usable Groq chat model for this key. Models seen: {ids}")
+        print(f"Switching Groq model {LLM_MODEL} -> {pick}")
+        LLM_MODEL = pick
+
     def complete(self, system, user, max_tokens=700):
         """One LLM call, provider-agnostic, with retry on rate limits."""
         for attempt in range(4):
@@ -58,6 +70,10 @@ class RAG:
                 return r.content[0].text
             except Exception as e:
                 msg = str(e).lower()
+                if PROVIDER == "groq" and ("404" in msg or "not found" in msg or "model" in msg and "access" in msg):
+                    self._pick_groq_model()  # model name wrong/unavailable: choose one this key can use
+                    if attempt < 3:
+                        continue
                 if attempt == 3 or "401" in msg or "auth" in msg or "api key" in msg:
                     raise
                 time.sleep(8 * (attempt + 1))  # free tiers rate-limit: back off and retry
