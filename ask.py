@@ -1,4 +1,4 @@
-"""Retrieve relevant chunks and have Claude answer using only that context.
+"""Retrieve relevant chunks and have an LLM answer using only that context.
 
 Usage:
     python ask.py "What is the attendance requirement?"
@@ -7,13 +7,18 @@ Usage:
 import argparse
 import os
 
-import anthropic
+import time
+
 import chromadb
 from sentence_transformers import SentenceTransformer
 
 EMBED_MODEL = "all-MiniLM-L6-v2"
 COLLECTION = "docs"
-CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-5-5")
+# Free by default: Groq free tier. Set LLM_PROVIDER=anthropic to use Claude instead.
+PROVIDER = os.getenv("LLM_PROVIDER", "groq").lower()
+MODELS = {"groq": os.getenv("LLM_MODEL", "llama-3.3-70b-versatile"),
+          "anthropic": os.getenv("LLM_MODEL", "claude-sonnet-5-5")}
+LLM_MODEL = MODELS[PROVIDER]
 
 SYSTEM = (
     "You answer questions using ONLY the provided context excerpts. "
@@ -27,7 +32,35 @@ class RAG:
         self.k = k
         self.embedder = SentenceTransformer(EMBED_MODEL)
         self.col = chromadb.PersistentClient(path=db).get_collection(COLLECTION)
-        self.llm = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+        self.llm = self._make_client()
+
+    @staticmethod
+    def _make_client():
+        if PROVIDER == "groq":
+            from groq import Groq
+            return Groq()  # reads GROQ_API_KEY
+        import anthropic
+        return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+
+    def complete(self, system, user, max_tokens=700):
+        """One LLM call, provider-agnostic, with retry on rate limits."""
+        for attempt in range(4):
+            try:
+                if PROVIDER == "groq":
+                    msgs = ([{"role": "system", "content": system}] if system else [])
+                    msgs.append({"role": "user", "content": user})
+                    r = self.llm.chat.completions.create(
+                        model=LLM_MODEL, messages=msgs, max_tokens=max_tokens, temperature=0)
+                    return r.choices[0].message.content
+                r = self.llm.messages.create(
+                    model=LLM_MODEL, max_tokens=max_tokens, system=system or "You are a grader.",
+                    messages=[{"role": "user", "content": user}])
+                return r.content[0].text
+            except Exception as e:
+                msg = str(e).lower()
+                if attempt == 3 or "401" in msg or "auth" in msg or "api key" in msg:
+                    raise
+                time.sleep(8 * (attempt + 1))  # free tiers rate-limit: back off and retry
 
     def retrieve(self, question):
         emb = self.embedder.encode([question]).tolist()
@@ -42,16 +75,9 @@ class RAG:
         context = "\n\n".join(
             f"[{c['file']}, page {c['page']}]\n{c['text']}" for c in chunks
         )
-        msg = self.llm.messages.create(
-            model=CLAUDE_MODEL,
-            max_tokens=700,
-            system=SYSTEM,
-            messages=[{
-                "role": "user",
-                "content": f"Context:\n{context}\n\nQuestion: {question}",
-            }],
-        )
-        return msg.content[0].text, chunks
+        prompt = f"Context:\n{context}\n\nQuestion: {question}"
+        text = self.complete(SYSTEM, prompt, 700)
+        return text, chunks
 
 
 if __name__ == "__main__":
